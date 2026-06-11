@@ -1,0 +1,55 @@
+{% extends "base.html" %} {% block content %}
+<section data-page="task" data-task-id="{{ task_id }}">
+  <div class="page-head">
+    <div>
+      <h1 id="task-title">task</h1>
+      <p class="muted" id="task-description"></p>
+    </div>
+    <a class="button secondary" href="/dashboard">назад</a>
+  </div>
+
+  <div class="grid two">
+    <section class="card">
+      <h2>состояние</h2>
+      <form id="task-update-form" class="stack">
+        <label>status</label>
+        <select name="status">
+          <option value="todo">todo</option>
+          <option value="in_progress">in_progress</option>
+          <option value="blocked">blocked</option>
+          <option value="done">done</option>
+        </select>
+        <label>priority</label>
+        <select name="priority">
+          <option value="low">low</option>
+          <option value="medium">medium</option>
+          <option value="high">high</option>
+          <option value="critical">critical</option>
+        </select>
+        <button type="submit">обновить</button>
+      </form>
+      <div id="task-meta" class="meta"></div>
+    </section>
+
+    <section class="card">
+      <h2>вложения</h2>
+      <form id="attachment-form" class="stack">
+        <input type="file" name="file" required />
+        <button type="submit">загрузить файл</button>
+        <p id="attachment-message" class="muted"></p>
+      </form>
+      <div id="attachments-list" class="list"></div>
+    </section>
+  </div>
+
+  <section class="card">
+    <h2>комментарии</h2>
+    <form id="comment-form" class="stack">
+      <textarea name="body" placeholder="комментарий" required></textarea>
+      <button type="submit">добавить комментарий</button>
+      <p id="comment-message" class="muted"></p>
+    </form>
+    <div id="comments-list" class="list"></div>
+  </section>
+</section>
+{% endblock %}

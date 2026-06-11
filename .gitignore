@@ -1,0 +1,27 @@
+# python cache
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+
+# local virtual environments
+.venv/
+venv/
+
+# runtime data
+uploads/*
+!uploads/.gitkeep
+exports/*
+!exports/.gitkeep
+
+# generated scan outputs
+reports/baseline/*.json
+reports/baseline/*.txt
+reports/baseline/*.log
+reports/baseline/runtime_check/*.txt
+reports/baseline/runtime_check/*.log
+
+# local editor files
+.vscode/
+.idea/
+.DS_Store

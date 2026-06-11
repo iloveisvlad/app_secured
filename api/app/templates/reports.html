@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<section data-page="reports">
+  <div class="page-head">
+    <div>
+      <h1>reports</h1>
+      <p class="muted">экспорт создается worker-контейнером через redis queue.</p>
+    </div>
+    <a class="button secondary" href="/dashboard">dashboard</a>
+  </div>
+
+  <section class="card narrow">
+    <h2>создать экспорт</h2>
+    <form id="report-form" class="stack">
+      <label>project</label>
+      <select name="project_id" id="report-project-select">
+        <option value="">all projects</option>
+      </select>
+      <label>format</label>
+      <select name="format">
+        <option value="json">json</option>
+        <option value="csv">csv</option>
+      </select>
+      <button type="submit">запустить экспорт</button>
+    </form>
+  </section>
+
+  <section class="card">
+    <h2>последний отчет</h2>
+    <div id="report-status" class="meta">отчет еще не запущен</div>
+  </section>
+</section>
+{% endblock %}

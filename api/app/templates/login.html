@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="card narrow" data-page="login">
+  <h1>вход</h1>
+  <p class="muted">демо-учетные записи: admin/admin123 или analyst/analyst123</p>
+  <form id="login-form">
+    <label>username</label>
+    <input name="username" value="admin" autocomplete="username" required>
+    <label>password</label>
+    <input name="password" type="password" value="admin123" autocomplete="current-password" required>
+    <button type="submit">войти</button>
+  </form>
+  <p id="login-message" class="message"></p>
+</section>
+{% endblock %}

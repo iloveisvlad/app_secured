@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<section data-page="project" data-project-id="{{ project_id }}">
+  <div class="page-head">
+    <div>
+      <h1 id="project-title">project</h1>
+      <p class="muted" id="project-description"></p>
+    </div>
+    <a class="button secondary" href="/dashboard">назад</a>
+  </div>
+  <section class="card">
+    <h2>задачи проекта</h2>
+    <div id="project-tasks-list" class="list"></div>
+  </section>
+</section>
+{% endblock %}

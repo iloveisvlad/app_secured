@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<section data-page="dashboard">
+  <div class="page-head">
+    <div>
+      <h1>dashboard</h1>
+      <p class="muted" id="current-user"></p>
+    </div>
+    <a class="button secondary" href="/reports">экспорт отчетов</a>
+  </div>
+
+  <div class="grid two">
+    <section class="card">
+      <h2>проекты</h2>
+      <form id="project-form" class="stack">
+        <input name="name" placeholder="название проекта" required>
+        <textarea name="description" placeholder="описание"></textarea>
+        <button type="submit">создать проект</button>
+      </form>
+      <div id="projects-list" class="list"></div>
+    </section>
+
+    <section class="card">
+      <h2>задачи</h2>
+      <form id="task-form" class="stack">
+        <select name="project_id" id="task-project-select" required></select>
+        <input name="title" placeholder="заголовок задачи" required>
+        <textarea name="description" placeholder="описание задачи"></textarea>
+        <div class="row">
+          <select name="priority">
+            <option value="low">low</option>
+            <option value="medium" selected>medium</option>
+            <option value="high">high</option>
+            <option value="critical">critical</option>
+          </select>
+          <select name="status">
+            <option value="todo" selected>todo</option>
+            <option value="in_progress">in_progress</option>
+            <option value="blocked">blocked</option>
+            <option value="done">done</option>
+          </select>
+        </div>
+        <button type="submit">создать задачу</button>
+      </form>
+      <div id="tasks-list" class="list"></div>
+    </section>
+  </div>
+</section>
+{% endblock %}

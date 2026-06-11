@@ -1,0 +1,75 @@
+services:
+  nginx:
+    image: nginx:1.21
+    container_name: taskops_nginx_vulnerable
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - api
+
+  api:
+    image: taskops-board-api:vulnerable
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    container_name: taskops_api_vulnerable
+    ports:
+      - "8000:8000"
+    environment:
+      APP_NAME: "TaskOps Board"
+      ENVIRONMENT: "development"
+      DATABASE_URL: "postgresql://taskops:taskops123@postgres:5432/taskops"
+      REDIS_URL: "redis://redis:6379/0"
+      JWT_SECRET: "dev-secret-hardcoded-for-training"
+      DEMO_API_TOKEN: "tok_demo_unsafe_value_123456789"
+      UPLOAD_DIR: "/app/uploads"
+      REPORT_DIR: "/app/reports"
+    volumes:
+      - ./uploads:/app/uploads
+      - ./exports:/app/reports
+    depends_on:
+      - postgres
+      - redis
+
+  worker:
+    image: taskops-board-worker:vulnerable
+    build:
+      context: .
+      dockerfile: worker/Dockerfile
+    container_name: taskops_worker_vulnerable
+    environment:
+      APP_NAME: "TaskOps Board"
+      ENVIRONMENT: "development"
+      DATABASE_URL: "postgresql://taskops:taskops123@postgres:5432/taskops"
+      REDIS_URL: "redis://redis:6379/0"
+      JWT_SECRET: "dev-secret-hardcoded-for-training"
+      REPORT_DIR: "/app/reports"
+    volumes:
+      - ./exports:/app/reports
+    depends_on:
+      - postgres
+      - redis
+      - api
+
+  postgres:
+    image: postgres:13
+    container_name: taskops_postgres_vulnerable
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: "taskops"
+      POSTGRES_USER: "taskops"
+      POSTGRES_PASSWORD: "taskops123"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:6
+    container_name: taskops_redis_vulnerable
+    ports:
+      - "6379:6379"
+
+volumes:
+  postgres_data:
