@@ -45,7 +45,7 @@ services:
       ENVIRONMENT: "development"
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
       REDIS_URL: redis://redis:6379/0
-      JWT_SECRET: "dev-secret-hardcoded-for-training"
+      JWT_SECRET: ${JWT_SECRET}
       REPORT_DIR: "/app/reports"
     volumes:
       - ./exports:/app/reports

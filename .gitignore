@@ -15,6 +15,7 @@ exports/*
 !exports/.gitkeep
 
 # generated scan outputs
+reports/
 reports/baseline/*.json
 reports/baseline/*.txt
 reports/baseline/*.log
