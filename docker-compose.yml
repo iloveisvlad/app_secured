@@ -20,9 +20,10 @@ services:
     environment:
       APP_NAME: "TaskOps Board"
       ENVIRONMENT: "development"
-      DATABASE_URL: "postgresql://taskops:taskops123@postgres:5432/taskops"
-      REDIS_URL: "redis://redis:6379/0"
-      JWT_SECRET: "dev-secret-hardcoded-for-training"
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      REDIS_URL: redis://redis:6379/0
+      JWT_SECRET: ${JWT_SECRET}
+      DEBUG: "false"
       DEMO_API_TOKEN: "tok_demo_unsafe_value_123456789"
       UPLOAD_DIR: "/app/uploads"
       REPORT_DIR: "/app/reports"
@@ -42,8 +43,8 @@ services:
     environment:
       APP_NAME: "TaskOps Board"
       ENVIRONMENT: "development"
-      DATABASE_URL: "postgresql://taskops:taskops123@postgres:5432/taskops"
-      REDIS_URL: "redis://redis:6379/0"
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      REDIS_URL: redis://redis:6379/0
       JWT_SECRET: "dev-secret-hardcoded-for-training"
       REPORT_DIR: "/app/reports"
     volumes:
@@ -59,9 +60,9 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_DB: "taskops"
-      POSTGRES_USER: "taskops"
-      POSTGRES_PASSWORD: "taskops123"
+        POSTGRES_USER: ${POSTGRES_USER}
+        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+        POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - postgres_data:/var/lib/postgresql/data
 

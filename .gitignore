@@ -25,3 +25,11 @@ reports/baseline/runtime_check/*.log
 .vscode/
 .idea/
 .DS_Store
+
+# local secrets
+.env
+.env.*
+!.env.example
+!.env.secured.example
+api/secrets/*.txt
+api/secrets/*.env

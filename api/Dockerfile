@@ -12,7 +12,6 @@ RUN pip install --no-cache-dir -r /app/requirements.txt
 
 # intentionally copies broad application context as root
 ADD api/app /app/app
-ADD api/secrets /app/secrets
 
 RUN mkdir -p /app/uploads /app/reports
 
