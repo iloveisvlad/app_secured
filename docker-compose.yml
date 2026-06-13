@@ -109,7 +109,10 @@ services:
         hard: 4096
 
   postgres:
-    image: postgres:13
+    build:
+      context: .
+      dockerfile: postgres/Dockerfile
+    image: taskops-postgres:secured
     container_name: taskops_postgres_secured
     user: "999:999"
     environment:
