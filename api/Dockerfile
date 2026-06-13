@@ -1,21 +1,29 @@
-# intentionally vulnerable dockerfile for training baseline
-FROM python:3.9-bullseye
+FROM python:3.12-slim-trixie
 
-# intentionally installs extra tools and does not clean apt cache
-RUN apt-get update && apt-get install -y curl wget netcat-openbsd vim procps gcc
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV PIP_NO_CACHE_DIR=1
 
 WORKDIR /app
 
-# intentionally uses add instead of copy
-ADD api/requirements.txt /app/requirements.txt
-RUN pip install --no-cache-dir -r /app/requirements.txt
+RUN groupadd --system --gid 10001 taskops \
+    && useradd --system --uid 10001 --gid taskops --home-dir /app --shell /usr/sbin/nologin taskops
 
-# intentionally copies broad application context as root
-ADD api/app /app/app
+COPY api/requirements.txt /app/requirements.txt
 
-RUN mkdir -p /app/uploads /app/reports
+RUN pip install --upgrade pip setuptools wheel \
+    && pip install --no-cache-dir -r /app/requirements.txt
+
+COPY api/app /app/app
+
+RUN mkdir -p /app/uploads /app/reports \
+    && chown -R taskops:taskops /app
+
+USER taskops
 
 EXPOSE 8000
 
-# intentionally runs as root and enables reload mode
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
+  CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3).read()" || exit 1
+
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
