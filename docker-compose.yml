@@ -9,7 +9,7 @@ services:
       api:
         condition: service_healthy
     ports:
-      - "80:8080"
+      - "${NGINX_BIND_ADDR:-0.0.0.0}:80:8080"
     networks:
       - frontend
     restart: unless-stopped
