@@ -117,7 +117,7 @@ services:
       dockerfile: postgres/Dockerfile
     image: taskops-postgres:secured
     container_name: taskops_postgres_secured
-    user: "999:999"
+    user: "postgres"
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -130,7 +130,7 @@ services:
     read_only: true
     tmpfs:
       - /tmp:rw,noexec,nosuid,size=128m,mode=1777
-      - /var/run/postgresql:rw,noexec,nosuid,size=64m,mode=1777,uid=999,gid=999
+      - /var/run/postgresql:rw,noexec,nosuid,size=64m,mode=3775,uid=70,gid=70
     security_opt:
       - no-new-privileges:true
       - apparmor:docker-default
@@ -148,7 +148,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-      start_period: 20s
+      start_period: 45s
 
   redis:
     build:
