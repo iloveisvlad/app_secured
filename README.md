@@ -1,8 +1,7 @@
 # TaskOps Board — vulnerable deployment
 
-TaskOps Board — учебный стенд для практики по безопасному развертыванию контейнерного приложения. Само приложение реализовано как рабочий task manager для небольшой DevOps/SOC-команды: вход в систему, проекты, задачи, комментарии, вложения и экспорт отчетов через фонового worker.
+TaskOps Board — учебный стенд для практики по безопасному развертыванию контейнерного приложения. Само приложение реализовано как рабочий task manager для небольшой команды: вход в систему, проекты, задачи, комментарии, вложения и экспорт отчетов через фонового worker.
 
-Важное ограничение: эта версия называется `app_vulnerable`, потому что Dockerfile, docker-compose и окружение намеренно сделаны небезопасными. Код приложения не содержит специально добавленных SQL injection, RCE или SSRF. Основная демонстрируемая проблема — небезопасное контейнерное развертывание.
 
 ## Состав стенда
 
@@ -16,7 +15,6 @@ worker       фоновая обработка report jobs
 
 ## Что нужно установить
 
-Для Windows рекомендуется использовать WSL2 Ubuntu и Docker Desktop с включенной интеграцией WSL.
 
 Минимально нужно:
 
@@ -24,8 +22,7 @@ worker       фоновая обработка report jobs
 1. git
 2. docker desktop или docker engine
 3. docker compose v2
-4. wsl2 ubuntu, если работа идет на windows
-5. trivy, если будут выполняться сканирования
+4. trivy, если будут выполняться сканирования
 ```
 
 Проверка:
@@ -49,27 +46,6 @@ docker compose up --build
 
 ```text
 http://localhost/
-```
-
-Также backend напрямую намеренно опубликован наружу:
-
-```text
-http://localhost:8000/docs
-http://localhost:8000/health
-```
-
-PostgreSQL и Redis тоже намеренно опубликованы на host:
-
-```text
-localhost:5432
-localhost:6379
-```
-
-## Демо-учетные записи
-
-```text
-admin / admin123
-analyst / analyst123
 ```
 
 ## Проверка основной логики
@@ -114,45 +90,12 @@ chmod +x scripts/*.sh
 reports/baseline/
 ```
 
-Docker Bench Security лучше запускать в Linux VM или полноценной Linux-среде. В Docker Desktop на Windows/WSL2 результат может быть неполным:
 
 ```bash
 ./scripts/docker_bench.sh
 ```
 
 ## Намеренные проблемы в этой версии
-
-На уровне Dockerfile:
-
-```text
-- запуск api и worker от root;
-- тяжелый устаревающий базовый образ python:3.9-bullseye;
-- лишние пакеты curl, wget, netcat-openbsd, vim, procps, gcc;
-- нет healthcheck;
-- нет .dockerignore;
-- используется add вместо copy;
-- apt cache не очищается;
-- часть зависимостей закреплена непоследовательно;
-- в build context есть демонстрационный секрет.
-```
-
-На уровне docker-compose:
-
-```text
-- наружу опубликованы api, postgres и redis;
-- все сервисы находятся в одной сети;
-- секреты и пароли заданы прямо в compose;
-- нет read_only;
-- нет cap_drop;
-- нет no-new-privileges;
-- нет pids_limit;
-- нет memory limits;
-- нет healthcheck на уровне compose;
-- uploads и exports примонтированы грубо;
-- нет нормальной политики restart.
-```
-
-Эти проблемы будут исправляться позже в отдельной защищенной версии `app_secured` после baseline-сканов.
 
 ## Остановка и очистка
 
